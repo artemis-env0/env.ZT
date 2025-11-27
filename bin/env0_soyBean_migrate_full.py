@@ -6,7 +6,7 @@ Author:
     artem@env0
 
 Release Notes:
-    - v1.0.0.0
+    - v1.0.0.1
     - All in One
     - Initial Release
 
