@@ -8,7 +8,7 @@ EnvZero SoyBean Migrator Full
 #### Version :
 
 ````git
-Version = v1.0.0.0
+Version = v1.0.0.1
 ````
 ----
 ### ⚠️⚠️⚠️ **IRREVERSIBLE ACTION AHEAD** ⚠️⚠️⚠️  
@@ -151,12 +151,12 @@ import requests
 def get_env0_config():
     """
     Read env0-related environment variables and return:
-    - base_url
-    - org_id
+    - api_base_uri
+    - org_oid
     - headers (with Basic auth)
     """
-    base_url = os.environ.get("ENV0_API_URL", "https://api.env0.com")
-    org_id = os.environ["ENV0_ORGANIZATION_ID"]
+    api_base_uri = os.environ.get("ENV0_API_URL", "https://api.env0.com")
+    org_oid = os.environ["ENV0_ORGANIZATION_ID"]
     api_key = os.environ["ENV0_API_KEY"]
     api_secret = os.environ["ENV0_API_SECRET"]
 
@@ -167,11 +167,11 @@ def get_env0_config():
         "Accept": "application/json",
     }
 
-    return base_url, org_id, headers
+    return api_base_uri, org_oid, headers
 
 
 # ---------- env0 config ----------
-BASE_URL, ORG_ID, HEADERS = get_env0_config()
+api_base_uri, org_oid, HEADERS = get_env0_config()
 
 # ---------- config ----------
 DRY_RUN = True  # set to False to actually update
@@ -189,10 +189,10 @@ def env0_get_all_templates():
 
     while True:
         resp = requests.get(
-            f"{BASE_URL}/blueprints",
+            f"{api_base_uri}/blueprints",
             headers=HEADERS,
             params={
-                "organizationId": ORG_ID,
+                "organizationId": org_oid,
                 "page": page,
                 "limit": 100,
             },
@@ -237,7 +237,7 @@ def env0_update_template_tool(template, new_tool):
     }
 
     resp = requests.put(
-        f"{BASE_URL}/blueprints/{tpl_id}",
+        f"{api_base_uri}/blueprints/{tpl_id}",
         headers=HEADERS,
         json=body,
         timeout=30,
@@ -247,7 +247,7 @@ def env0_update_template_tool(template, new_tool):
 
 def env0_ignite():
     templates = env0_get_all_templates()
-    print(f"Found {len(templates)} templates in org {ORG_ID}")
+    print(f"Found {len(templates)} templates in org {org_oid}")
 
     to_change = [
         t for t in templates
