@@ -73,6 +73,7 @@ The script does **not** change your HCL or state — it only updates the configu
 
 #### 'env0_soyBean_migrate_full'
 ````python
+#!/usr/bin/env python3
 
 import os
 import sys
