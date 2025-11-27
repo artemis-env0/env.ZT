@@ -4,7 +4,7 @@
 env0_soyBean_migrate.py
 Author:
     artem@env0
-    
+
 Release Notes:
     - v1.0.0.1
     - Initial Release
@@ -17,7 +17,7 @@ Description:
     their IaC tool is switched from Terraform to OpenTofu.
 
     The script:
-      - Authenticates to env0 using API key/secret (via env0_connect.py.get_env0_config)
+      - Authenticates to env0 using API key/secret (via env0_connect.get_env0_config)
       - Lists all templates in the given organization
       - Filters templates currently using Terraform
       - In DRY-RUN mode: prints what would be changed
@@ -51,24 +51,23 @@ Notes:
     - Test against non-production templates before running in APPLY mode.
 """
 
-
 import requests
 import os
 import sys
 import urllib3
 import base64 as b64
-from env0_connect.py import get_env0_config
+from env0_connect import get_env0_config
 
 # ---------- env0 config (from shared auth lib) ----------
 BASE_URL, ORG_ID, HEADERS = get_env0_config()
 
 # ------------------------ config ------------------------
 DRY_RUN = True  # set to False to actually update
-TERRAFORM_TOOL_FIELD = "terraformTools"  # <-- replace with real field name from GET /blueprints/{id}
+TERRAFORM_TOOL_FIELD = "terraformTools"  # replace with real field name from GET /blueprints/{id} [Endpoint]
 TARGET_TOOL = "opentofu"                 # desired value; valid values: 'opentofu', 'terraform'
 
 
-def get_all_templates():
+def env0_get_all_templates():
     """
     Fetch all templates (blueprints) for the organization.
     The exact pagination keys may vary; if your org is small this might just return a flat list.
@@ -91,7 +90,11 @@ def get_all_templates():
         data = resp.json()
 
         # Some env0 endpoints wrap results; others just return a list.
-        docs = data.get("documents", data)
+        if isinstance(data, list):
+            docs = data
+        else:
+            docs = data.get("documents", data)
+
         if not isinstance(docs, list) or not docs:
             break
 
@@ -103,7 +106,7 @@ def get_all_templates():
     return templates
 
 
-def update_template_tool(template, new_tool):
+def env0_update_template_tool(template, new_tool):
     """
     Update a single template's Terraform/OpenTofu tool.
 
@@ -130,8 +133,8 @@ def update_template_tool(template, new_tool):
     resp.raise_for_status()
 
 
-def main():
-    templates = get_all_templates()
+def env0_ignite():
+    templates = env0_get_all_templates()
     print(f"Found {len(templates)} templates in org {ORG_ID}")
 
     to_change = [
@@ -150,8 +153,8 @@ def main():
         print(f"{prefix} {name} ({tpl_id}): {current} -> {TARGET_TOOL}")
 
         if not DRY_RUN:
-            update_template_tool(t, TARGET_TOOL)
+            env0_update_template_tool(t, TARGET_TOOL)
 
 
 if __name__ == "__main__":
-    main()
+    env0_ignite()
