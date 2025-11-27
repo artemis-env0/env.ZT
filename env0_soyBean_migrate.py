@@ -59,7 +59,7 @@ import base64 as b64
 from env0_connect import get_env0_config
 
 # ---------- env0 config (from shared auth lib) ----------
-BASE_URL, ORG_ID, HEADERS = get_env0_config()
+api_base_uri, org_oid, HEADERS = get_env0_config()
 
 # ------------------------ config ------------------------
 DRY_RUN = True  # set to False to actually update
@@ -77,10 +77,10 @@ def env0_get_all_templates():
 
     while True:
         resp = requests.get(
-            f"{BASE_URL}/blueprints",
+            f"{api_base_uri}/blueprints",
             headers=HEADERS,
             params={
-                "organizationId": ORG_ID,
+                "organizationId": org_oid,
                 "page": page,
                 "limit": 100,
             },
@@ -125,7 +125,7 @@ def env0_update_template_tool(template, new_tool):
     }
 
     resp = requests.put(
-        f"{BASE_URL}/blueprints/{tpl_id}",
+        f"{api_base_uri}/blueprints/{tpl_id}",
         headers=HEADERS,
         json=body,
         timeout=30,
@@ -135,7 +135,7 @@ def env0_update_template_tool(template, new_tool):
 
 def env0_ignite():
     templates = env0_get_all_templates()
-    print(f"Found {len(templates)} templates in org {ORG_ID}")
+    print(f"Found {len(templates)} templates in org {org_oid}")
 
     to_change = [
         t for t in templates
