@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-env0_Auth.py
+env0_connect.py
 Author:
     artem@env0
     
@@ -24,7 +24,7 @@ Environment Variables:
     ENV0_API_SECRET          (required)
 
 Usage:
-    from env0_auth import get_env0_config
+    from env0_connect import get_env0_config
     BASE_URL, ORG_ID, HEADERS = get_env0_config()
 """
 
