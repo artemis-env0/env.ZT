@@ -28,7 +28,8 @@ Usage:
     BASE_URL, ORG_ID, HEADERS = get_env0_config()
 """
 
-
+import sys
+import urllib3
 import os
 import base64 as b64
 
