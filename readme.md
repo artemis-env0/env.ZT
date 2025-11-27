@@ -177,57 +177,6 @@ The script does **not** change your HCL or state — it only updates the configu
 ````python
 #!/usr/bin/env python3
 
-"""
-env0_soyBean_migrate.py
-Author:
-    artem@env0
-
-Release Notes:
-    - v1.0.0.1
-    - Initial Release
-
-Fixes:
-    - Improved Performance
-
-Description:
-    Utility script to mass-update env0 templates (blueprints) so that
-    their IaC tool is switched from Terraform to OpenTofu.
-
-    The script:
-      - Authenticates to env0 using API key/secret (via env0_connect.get_env0_config)
-      - Lists all templates in the given organization
-      - Filters templates currently using Terraform
-      - In DRY-RUN mode: prints what would be changed
-      - In APPLY mode: updates the tool field to 'opentofu'
-
-Requirements:
-    - Python 3.x
-    - requests
-
-Environment Variables:
-    ENV0_API_URL             (optional, default: https://api.env0.com)
-    ENV0_ORGANIZATION_ID     (required)
-    ENV0_API_KEY             (required)
-    ENV0_API_SECRET          (required)
-
-Config Flags:
-    DRY_RUN                  When True, no changes are made, only printed.
-    TERRAFORM_TOOL_FIELD     JSON field name that stores the IaC tool type
-                             (replace placeholder with the real field name).
-
-Usage:
-    # Dry run (recommended first run)
-    $ python env0_soyBean_migrate.py
-
-    # Edit the script to set DRY_RUN = False, then:
-    $ python env0_soyBean_migrate.py
-
-Notes:
-    - Verify TERRAFORM_TOOL_FIELD by calling GET /blueprints/{id}
-      and locating the field that currently equals 'terraform'.
-    - Test against non-production templates before running in APPLY mode.
-"""
-
 import requests
 import os
 import sys
