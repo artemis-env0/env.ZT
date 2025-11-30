@@ -132,7 +132,7 @@ The script does **not** change your HCL or state — it only updates the configu
 ## Repository Layout
 
     .
-    ├── bin                                  # shared env0 auth helper
+    └── bin                                  # shared env0 auth helper
          ├── env0_soyBean_migrate_full.py    # main bulk migration script w/ env0_connect
          └── readme.md                       # Readme Markdown for Folder
     ├── env0_connect.py                      # shared env0 auth helper
