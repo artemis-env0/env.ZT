@@ -34,7 +34,6 @@ import urllib3
 import os
 import base64 as b64
 
-
 def get_env0_config():
     """
     Read env0-related environment variables and return:
