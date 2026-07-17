@@ -4,7 +4,7 @@
 
 env0 (EnvZero) SoyBean Migrator
 ----
-### env0 Terraform → OpenTofu Bulk Migrator
+### env0 Terraform > OpenTofu Bulk Migrator
 #### Version :
 
 ````git
